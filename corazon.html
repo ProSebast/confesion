@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="corazon.css">
+    <title>Corazón Vibrante</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #1a1a2e;
+            overflow: hidden;
+            position: relative;
+        }
+        #textBackground {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.2);
+            z-index: 1;
+            line-height: 1.8;
+            word-wrap: break-word;
+            overflow: hidden;
+            pointer-events: none;
+            user-select: none;
+        }
+        @media (max-width: 600px) {
+            #textBackground {
+                font-size: 12px;
+                line-height: 1.4;
+                padding: 15px;
+            }
+        }
+        @media (max-width: 400px) {
+            #textBackground {
+                font-size: 10px;
+                line-height: 1.3;
+                padding: 10px;
+            }
+        }
+        .heart {
+            position: relative;
+            z-index: 2;
+        }
+        #choiceContainer {
+            position: fixed;
+            bottom: 50px;
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+            z-index: 2;
+            text-align: center;
+            width: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        #extraImg {
+            z-index: 2;
+        }
+        .choiceBtn {
+            padding: 10px 30px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="textBackground"></div>
+    <div class="heart">
+        <p>Me gustas… ¿te gustaría intentar algo conmigo?</p>
+    </div>
+    <!-- contenedor de botones centrado fijo en la parte inferior -->
+    <div id="choiceContainer">
+        <button id="btnYes" class="choiceBtn">Sí</button>
+        <button id="btnNo" class="choiceBtn">No</button>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.3.1/dist/confetti.browser.min.js"></script>
+
+    <script>
+        const words = [
+            'I\'M YOURS', 'I YEARN FOR YOU', 'LOVE YOU', 'NO OTHER',
+            'I\'M UNDER YOUR SPELL', 'I ADORE YOU', 'WITH ALL MY HEART',
+            'AND SOUL I WILL', 'LOVE YOU UNTIL I DIE', 'AND EVEN AFTER',
+            'I\'LL LOVE YOU', 'FOREVER YOU MAKE MY HEART', 'SO HAPPY',
+            'EVERY DAY WITH YOU I\'M', 'BLESSED TO HAVE YOUR LOVE',
+            'MY HEART CALLS FOR YOU', 'YOU\'VE ENCHANTED ME',
+            'I FEEL LOVE WHEN', 'I LOOK AT YOU', 'YOU\'RE AMAZING',
+            'MY OTHER HALF', 'THERE IS NO OTHER', 'I\'M SMITTEN',
+            'YOU TURN ME INSIDE OUT', 'I NEVER KNEW LOVE LIKE THIS',
+            'YOU MAKE ME SMILE', 'YOU MAKE ME LAUGH', 'YOU MAKE ME FEEL',
+            'ALIVE', 'COMPLETE', 'WHOLE', 'PERFECT', 'BEAUTIFUL'
+        ];
+
+        let backgroundText = '';
+        // generar muchas palabras para abarcar toda la pantalla (margen extra para que pueda desplazarse a la derecha)
+        for (let i = 0; i < 10000; i++) {
+            backgroundText += words[i % words.length] + ' ';
+        }
+
+        const bgDiv = document.getElementById('textBackground');
+        bgDiv.style.whiteSpace = 'normal';
+        bgDiv.style.overflowX = 'hidden';
+        bgDiv.style.padding = '20px';
+        bgDiv.style.textAlign = 'center';
+        bgDiv.style.justifyContent = 'center';
+
+        // animación de máquina de escribir: añadir texto poco a poco en 20s (más lenta)
+        let idx = 0;
+        const total = backgroundText.length;
+        const duration = 20000; // 20 segundos (antes 10s)
+        const interval = 2; // ms por paso approximate
+        const step = Math.ceil(total / (duration / interval));
+        bgDiv.textContent = '';
+        const typer = setInterval(() => {
+            bgDiv.textContent += backgroundText.slice(idx, idx + step);
+            idx += step;
+            if (idx >= total) {
+                clearInterval(typer);
+                bgDiv.textContent = backgroundText; // asegurar completitud
+            }
+        }, interval);
+
+
+
+        setInterval(() => {
+            confetti({
+                particleCount: 100,
+                spread: 60,
+                origin: { x: 0.5, y: 0.5 }
+            });
+        }, 2000);
+
+        // comportamiento de botones
+        const btnYes = document.getElementById('btnYes');
+        const btnNo = document.getElementById('btnNo');
+
+        function moveButtonRandom() {
+            // Siempre moverse dentro de la ventana y usar posición fija con z-index alto
+            const maxX = window.innerWidth - btnNo.offsetWidth;
+            const maxY = window.innerHeight - btnNo.offsetHeight;
+            const x = Math.random() * maxX;
+            const y = Math.random() * maxY;
+            btnNo.style.position = 'fixed';
+            btnNo.style.zIndex = '3'; // encima de todos los demás elementos
+            btnNo.style.left = Math.max(0, Math.min(maxX, x)) + 'px';
+            btnNo.style.top = Math.max(0, Math.min(maxY, y)) + 'px';
+        }
+
+        // eventos para escritorio y móvil
+        btnNo.addEventListener('mouseenter', moveButtonRandom);
+        btnNo.addEventListener('click', (e) => { e.preventDefault(); moveButtonRandom(); btnNo.blur(); });
+        btnNo.addEventListener('pointerdown', (e) => e.preventDefault());
+        btnNo.addEventListener('touchstart', (e) => { e.preventDefault(); moveButtonRandom(); btnNo.blur(); });
+
+        // al pulsar "Sí" limpiar todo y mostrar mensaje + gif
+        btnYes.addEventListener('click', (e) => {
+            e.preventDefault();
+            document.body.innerHTML = `
+                <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;background:#1a1a2e;color:#fff;text-align:center;">
+                    <p style="font-size:1.5rem;padding:20px;">Jeje sabia que dirias que si.</p>
+                    <img src="peach-and-goma-peach.gif" alt="peach" style="max-width:300px;" />
+                </div>
+            `;
+        });
+
+    </script>
+</body>
+</html>

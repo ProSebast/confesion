@@ -1,0 +1,224 @@
+body {
+  margin: 0;
+  background: #020617;
+  color: #00ff9c;
+  font-family: monospace;
+  text-align: center;
+}
+
+/* estrellas */
+
+.stars {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+.stars::after {
+  content: "";
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: white;
+  box-shadow: 100px 200px white, 300px 400px white, 500px 150px white,
+    700px 350px white, 900px 250px white, 200px 500px white, 800px 600px white,
+    600px 300px white, 150px 100px white, 450px 550px white, 850px 400px white,
+    250px 750px white, 550px 50px white, 950px 100px white, 350px 650px white,
+    1000px 500px white, 400px 150px white, 200px 350px white, 700px 750px white;
+  animation: starsMove 20s linear infinite;
+}
+
+@keyframes starsMove {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-1000px);
+  }
+}
+
+/* contenedor */
+
+.container {
+  max-width: 700px;
+  margin: auto;
+  padding: 40px 20px;
+  animation: fadeIn 2s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* terminal */
+
+#terminal {
+  text-align: left;
+  white-space: pre-line;
+  font-size: 18px;
+  margin-bottom: 40px;
+  transition: opacity 1s;
+}
+
+/* contenido */
+
+#contenido {
+  color: white;
+  font-family: Arial, sans-serif;
+  font-size: 24px;
+  line-height: 1.6;
+  margin-bottom: 40px;
+  display: none;
+}
+
+/* lista compacta */
+
+ul {
+  text-align: left;
+  display: inline-block;
+  margin-top: 10px;
+  padding-left: 0; /* remove default padding for list-style none */
+  list-style: none; /* hide default bullets */
+}
+
+ul li {
+  margin: 8px 0;
+  font-size: 22px;
+  position: relative;
+  padding-left: 30px; /* space for icon */
+}
+
+ul li::before {
+  content: "💖";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: #ff79c6;
+  font-size: 22px;
+}
+
+
+/* animacion programador */
+
+.programador {
+  color: #38bdf8;
+  font-weight: bold;
+  animation: glow 2s infinite alternate;
+}
+
+@keyframes glow {
+  0% {
+    text-shadow: 0 0 5px #38bdf8;
+  }
+  100% {
+    text-shadow: 0 0 10px #38bdf8, 0 0 20px #38bdf8, 0 0 40px #38bdf8;
+  }
+}
+
+/* botón */
+
+button {
+  padding: 15px 35px;
+  font-size: 18px;
+  border: none;
+  border-radius: 12px;
+  background: #38bdf8;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+  animation: float 2s infinite ease-in-out;
+}
+
+button:hover {
+  background: #0ea5e9;
+  transform: scale(1.08);
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+/* corazón */
+
+.heart {
+  font-size: 90px;
+  animation: latido 1.2s infinite;
+  filter: drop-shadow(0 0 10px red);
+}
+
+@keyframes latido {
+  0% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 5px red);
+  }
+  25% {
+    transform: scale(1.2);
+    filter: drop-shadow(0 0 15px red);
+  }
+  40% {
+    transform: scale(1);
+  }
+  60% {
+    transform: scale(1.25);
+    filter: drop-shadow(0 0 25px red);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* responsive */
+
+@media (max-width: 600px) {
+  #contenido {
+    font-size: 20px;
+  }
+
+  button {
+    font-size: 16px;
+    padding: 14px 28px;
+  }
+}
+
+.fadeOut {
+  opacity: 0;
+}
+
+/* corazón de palabras */
+.word-heart {
+  width: 300px;
+  height: 300px;
+  margin: 0 auto;
+  padding: 10px;
+  color: white;
+  font-size: 10px;
+  line-height: 1.2;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  clip-path: path('M10,30 C20,0 80,0 90,30 C90,60 50,90 50,90 C50,90 10,60 10,30 Z');
+  -webkit-clip-path: path('M10,30 C20,0 80,0 90,30 C90,60 50,90 50,90 C50,90 10,60 10,30 Z');
+  overflow: hidden;
+}
+
+button:disabled {
+  background: #94d3ac;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
