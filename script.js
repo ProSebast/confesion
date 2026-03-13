@@ -1,4 +1,4 @@
-/* TERMINAL */
+/* Terminal, ay no se  */
 
 const lineasTerminal = [
   "> inicializando mensaje...",
@@ -35,7 +35,7 @@ function escribirTerminal() {
 
 escribirTerminal();
 
-/* PAGINAS */
+/* paguinas, Me encanta */
 
 let pagina = 0;
 
@@ -90,7 +90,7 @@ pero eso lo hace único y divertido.`,
 <div class="heart">❤️</div>`
 ];
 
-/* MAQUINA DE ESCRIBIR CORREGIDA */
+/* MAQUINA DE ESCRIBIR "dios como me gusta" */
 
 function escribirTexto(texto, elemento, callback) {
   let i = 0;

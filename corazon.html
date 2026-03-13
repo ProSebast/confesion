@@ -79,7 +79,7 @@
     <div class="heart">
         <p>Me gustas… ¿te gustaría intentar algo conmigo?</p>
     </div>
-    <!-- contenedor de botones centrado fijo en la parte inferior -->
+    <!-- contenedor de botones centrado fijo en la parte inferior, Quizas son demaciadas pero nome importa -->
     <div id="choiceContainer">
         <button id="btnYes" class="choiceBtn">Sí</button>
         <button id="btnNo" class="choiceBtn">No</button>
@@ -102,7 +102,7 @@
         ];
 
         let backgroundText = '';
-        // generar muchas palabras para abarcar toda la pantalla (margen extra para que pueda desplazarse a la derecha)
+        // generar muchas palabras para abarcar toda la pantalla, por 1 no es sufficiente mierda
         for (let i = 0; i < 10000; i++) {
             backgroundText += words[i % words.length] + ' ';
         }
@@ -114,11 +114,11 @@
         bgDiv.style.textAlign = 'center';
         bgDiv.style.justifyContent = 'center';
 
-        // animación de máquina de escribir: añadir texto poco a poco en 20s (más lenta)
+        // animación de máquina de escribir, pero más lenta para que se vea mejor
         let idx = 0;
         const total = backgroundText.length;
-        const duration = 20000; // 20 segundos (antes 10s)
-        const interval = 2; // ms por paso approximate
+        const duration = 20000; 
+        const interval = 2; // 
         const step = Math.ceil(total / (duration / interval));
         bgDiv.textContent = '';
         const typer = setInterval(() => {
@@ -126,7 +126,7 @@
             idx += step;
             if (idx >= total) {
                 clearInterval(typer);
-                bgDiv.textContent = backgroundText; // asegurar completitud
+                bgDiv.textContent = backgroundText; 
             }
         }, interval);
 
@@ -140,12 +140,12 @@
             });
         }, 2000);
 
-        // comportamiento de botones
+        // comportamiento de botones, Divina esa tipa
         const btnYes = document.getElementById('btnYes');
         const btnNo = document.getElementById('btnNo');
 
         function moveButtonRandom() {
-            // Siempre moverse dentro de la ventana y usar posición fija con z-index alto
+            // Siempre moverse dentro de la ventana y usar posición fija con z-index altom, quizas es demaciado pero no
             const maxX = window.innerWidth - btnNo.offsetWidth;
             const maxY = window.innerHeight - btnNo.offsetHeight;
             const x = Math.random() * maxX;
@@ -156,13 +156,13 @@
             btnNo.style.top = Math.max(0, Math.min(maxY, y)) + 'px';
         }
 
-        // eventos para escritorio y móvil
+        // eventos para escritorio y móvil, Solo existe una opcion jeje
         btnNo.addEventListener('mouseenter', moveButtonRandom);
         btnNo.addEventListener('click', (e) => { e.preventDefault(); moveButtonRandom(); btnNo.blur(); });
         btnNo.addEventListener('pointerdown', (e) => e.preventDefault());
         btnNo.addEventListener('touchstart', (e) => { e.preventDefault(); moveButtonRandom(); btnNo.blur(); });
 
-        // al pulsar "Sí" limpiar todo y mostrar mensaje + gif
+        // al pulsar si , me muero o no se que pasa pero algo bueno seguro
         btnYes.addEventListener('click', (e) => {
             e.preventDefault();
             document.body.innerHTML = `
