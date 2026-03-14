@@ -8,6 +8,49 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="corazon.css">
     <title>Corazón Vibrante</title>
+    <style>
+        #textBackground {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.12);
+            z-index: 1;
+            line-height: 1.2;
+            letter-spacing: -0.5px;
+            word-wrap: break-word;
+            overflow: hidden;
+            pointer-events: none;
+            user-select: none;
+            text-align: center;
+            padding: 10px;
+        }
+
+        .floating-heart {
+            position: fixed;
+            bottom: -50px;
+            color: rgba(242, 0, 68, 0.5);
+            font-size: 1.5rem;
+            pointer-events: none;
+            z-index: 3;
+            animation: floatUpRandom linear forwards;
+        }
+
+        @keyframes floatUpRandom {
+            0% {
+                transform: translateY(0) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% {
+                transform: translateY(-110vh) translateX(var(--randomX)) rotate(var(--randomRotate));
+                opacity: 0;
+            }
+        }
+    </style>
 </head>
 <body>
     <div id="textBackground"></div>
@@ -24,13 +67,43 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.3.1/dist/confetti.browser.min.js"></script>
 
     <script>
-        const words = ['I\'M YOURS', 'LOVE YOU', 'ADORE YOU', 'FOREVER', 'COMPLETE', 'WHOLE', 'BLESSED', 'AMAZING'];
+        const words = ['I\'M YOURS', 'LOVE YOU', 'ADORE YOU', 'FOREVER', 'COMPLETE', 'WHOLE', 'BLESSED', 'AMAZING', 'BEAUTIFUL', 'SMILE', 'LAUGH', 'PERFECT', 'ALWAYS'];
         const bgDiv = document.getElementById('textBackground');
-        let backgroundText = '';
-        for (let i = 0; i < 2000; i++) {
-            backgroundText += words[Math.floor(Math.random() * words.length)] + ' ';
+        let fullText = '';
+        for (let i = 0; i < 4000; i++) {
+            fullText += words[Math.floor(Math.random() * words.length)] + ' ';
         }
-        bgDiv.textContent = backgroundText;
+
+        let charIdx = 0;
+        const step = 4; // Un poco más de caracteres por vez
+        function deployText() {
+            if (charIdx < fullText.length) {
+                bgDiv.textContent += fullText.slice(charIdx, charIdx + step);
+                charIdx += step;
+                bgDiv.scrollTop = bgDiv.scrollHeight;
+                setTimeout(deployText, 25); // Más rápido (25ms en lugar de 50ms)
+            }
+        }
+        deployText();
+
+        function createParticle() {
+            const heart = document.createElement('div');
+            heart.className = 'floating-heart';
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            
+            const randomX = (Math.random() - 0.5) * 200; 
+            const randomRotate = (Math.random() - 0.5) * 360; 
+            const duration = 10 + Math.random() * 5; 
+            
+            heart.style.setProperty('--randomX', randomX + 'px');
+            heart.style.setProperty('--randomRotate', randomRotate + 'deg');
+            heart.style.animationDuration = duration + 's';
+            
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), duration * 1000);
+        }
+        setInterval(createParticle, 1000);
 
         const btnYes = document.getElementById('btnYes');
         const btnNo = document.getElementById('btnNo');
@@ -46,7 +119,6 @@
             btnNo.style.position = 'fixed';
             btnNo.style.left = x + 'px';
             btnNo.style.top = y + 'px';
-            btnNo.style.margin = '0';
 
             yesScale += 0.15;
             btnYes.style.transform = `scale(${yesScale})`;
