@@ -1,223 +1,191 @@
-body {
-  margin: 0;
-  background: #020617;
-  color: #00ff9c;
-  font-family: monospace;
-  text-align: center;
+body{
+margin:0;
+background:#020617;
+color:#00ff9c;
+font-family:monospace;
+text-align:center;
 }
 
 /* estrellas */
 
-.stars {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
+.stars{
+position:fixed;
+width:100%;
+height:100%;
+z-index:-1;
 }
 
-.stars::after {
-  content: "";
-  position: absolute;
-  width: 2px;
-  height: 2px;
-  background: white;
-  box-shadow: 100px 200px white, 300px 400px white, 500px 150px white,
-    700px 350px white, 900px 250px white, 200px 500px white, 800px 600px white,
-    600px 300px white, 150px 100px white, 450px 550px white, 850px 400px white,
-    250px 750px white, 550px 50px white, 950px 100px white, 350px 650px white,
-    1000px 500px white, 400px 150px white, 200px 350px white, 700px 750px white;
-  animation: starsMove 20s linear infinite;
+.stars::after{
+content:"";
+position:absolute;
+width:2px;
+height:2px;
+background:white;
+box-shadow:
+100px 200px white,
+300px 400px white,
+500px 150px white,
+700px 350px white,
+900px 250px white,
+200px 500px white,
+800px 600px white,
+600px 300px white,
+150px 100px white,
+450px 550px white,
+850px 400px white,
+250px 750px white,
+550px 50px white,
+950px 100px white,
+350px 650px white,
+1000px 500px white,
+400px 150px white,
+200px 350px white,
+700px 750px white;
+
+animation:starsMove 20s linear infinite;
 }
 
-@keyframes starsMove {
-  from {
-    transform: translateY(0);
-  }
-  to {
-    transform: translateY(-1000px);
-  }
+@keyframes starsMove{
+from{transform:translateY(0)}
+to{transform:translateY(-1000px)}
 }
 
 /* contenedor */
 
-.container {
-  max-width: 700px;
-  margin: auto;
-  padding: 40px 20px;
-  animation: fadeIn 2s ease-in;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+.container{
+max-width:700px;
+margin:auto;
+padding:40px 20px;
 }
 
 /* terminal */
 
-#terminal {
-  text-align: left;
-  white-space: pre-line;
-  font-size: 18px;
-  margin-bottom: 40px;
-  transition: opacity 1s;
+#terminal{
+text-align:left;
+white-space:pre-line;
+font-size:18px;
+margin-bottom:40px;
+color:#00ff9c;
 }
 
-/* contenido */
+/* manuscrito */
 
-#contenido {
-  color: white;
-  font-family: Arial, sans-serif;
-  font-size: 24px;
-  line-height: 1.6;
-  margin-bottom: 40px;
-  display: none;
+#contenido{
+color:white;
+font-family:'Dancing Script',cursive;
+font-size:34px;
+line-height:1.8;
+margin-bottom:40px;
+display:none;
+animation:aparecer 1s ease;
 }
 
-/* lista compacta, por que es tan bonita por la chucha */
-
-ul {
-  text-align: left;
-  display: inline-block;
-  margin-top: 10px;
-  padding-left: 0; 
-  list-style: none; 
+@keyframes aparecer{
+from{
+opacity:0;
+transform:translateY(10px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
 }
 
-ul li {
-  margin: 8px 0;
-  font-size: 22px;
-  position: relative;
-  padding-left: 30px; /* space for icon */
+/* botón */
+
+button{
+padding:15px 35px;
+font-size:18px;
+border:none;
+border-radius:12px;
+background:#38bdf8;
+color:white;
+cursor:pointer;
+transition:.3s;
 }
 
-ul li::before {
-  content: "💖";
-  position: absolute;
-  left: 0;
-  top: 0;
-  color: #ff79c6;
-  font-size: 22px;
+button:hover{
+background:#0ea5e9;
+transform:scale(1.08);
 }
 
+/* corazón */
 
-/* animacion, ella es sorprendente  */
-
-.programador {
-  color: #38bdf8;
-  font-weight: bold;
-  animation: glow 2s infinite alternate;
+.heart{
+font-size:90px;
+animation:latido 1.2s infinite;
+filter:drop-shadow(0 0 10px red);
 }
 
-@keyframes glow {
-  0% {
-    text-shadow: 0 0 5px #38bdf8;
-  }
-  100% {
-    text-shadow: 0 0 10px #38bdf8, 0 0 20px #38bdf8, 0 0 40px #38bdf8;
-  }
+@keyframes latido{
+0%{transform:scale(1)}
+25%{transform:scale(1.2)}
+40%{transform:scale(1)}
+60%{transform:scale(1.25)}
+100%{transform:scale(1)}
 }
 
-
-button {
-  padding: 15px 35px;
-  font-size: 18px;
-  border: none;
-  border-radius: 12px;
-  background: #38bdf8;
-  color: white;
-  cursor: pointer;
-  transition: 0.3s;
-  animation: float 2s infinite ease-in-out;
+.fadeOut{
+opacity:0;
+transition:1s;
 }
 
-button:hover {
-  background: #0ea5e9;
-  transform: scale(1.08);
+/* HOJA / CARTA */
+
+.hoja{
+display:none;
+margin:40px auto;
+padding:40px 50px;
+
+max-width:650px;
+
+background:#fffdf5;
+color:#2b2b2b;
+
+border-radius:8px;
+
+box-shadow:
+0 0 0 1px rgba(0,0,0,0.08),
+0 8px 30px rgba(0,0,0,0.25);
+
+position:relative;
+
+background-image:
+linear-gradient(#ece6d6 1px, transparent 1px);
+
+background-size:100% 32px;
 }
 
-@keyframes float {
-  0% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-6px);
-  }
-  100% {
-    transform: translateY(0);
-  }
+/* efecto borde de papel */
+
+.hoja::before{
+content:"";
+position:absolute;
+top:0;
+left:0;
+right:0;
+height:8px;
+
+background:linear-gradient(
+90deg,
+#f8f3e6,
+#e9e2cf,
+#f8f3e6
+);
 }
 
-/* corazón, quizas sea cursi pero nada */
+/* texto manuscrito dentro */
 
-.heart {
-  font-size: 90px;
-  animation: latido 1.2s infinite;
-  filter: drop-shadow(0 0 10px red);
+.hoja #contenido{
+color:#2b2b2b;
+font-family:'Caveat',cursive;
+font-size:34px;
+line-height:1.8;
 }
 
-@keyframes latido {
-  0% {
-    transform: scale(1);
-    filter: drop-shadow(0 0 5px red);
-  }
-  25% {
-    transform: scale(1.2);
-    filter: drop-shadow(0 0 15px red);
-  }
-  40% {
-    transform: scale(1);
-  }
-  60% {
-    transform: scale(1.25);
-    filter: drop-shadow(0 0 25px red);
-  }
-  100% {
-    transform: scale(1);
-  }
+/* lista centrada */
+
+.hoja ul{
+text-align:left;
+margin:auto;
 }
-
-/* responsive, En todos los angulos posible */
-
-@media (max-width: 600px) {
-  #contenido {
-    font-size: 20px;
-  }
-
-  button {
-    font-size: 16px;
-    padding: 14px 28px;
-  }
-}
-
-.fadeOut {
-  opacity: 0;
-}
-
-/* corazón Nose ella es muy bonita */
-.word-heart {
-  width: 300px;
-  height: 300px;
-  margin: 0 auto;
-  padding: 10px;
-  color: white;
-  font-size: 10px;
-  line-height: 1.2;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  clip-path: path('M10,30 C20,0 80,0 90,30 C90,60 50,90 50,90 C50,90 10,60 10,30 Z');
-  -webkit-clip-path: path('M10,30 C20,0 80,0 90,30 C90,60 50,90 50,90 C50,90 10,60 10,30 Z');
-  overflow: hidden;
-}
-
-button:disabled {
-  background: #94d3ac;
-  cursor: not-allowed;
-  opacity: 0.6;
-}
-
