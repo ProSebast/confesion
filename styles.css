@@ -65,7 +65,7 @@ body {
 .container {
     max-width: 700px;
     margin: 0 auto;
-    padding: 40px 10px;
+    padding: 20px 10px;
     width: 100%;
     box-sizing: border-box;
     display: flex;
@@ -76,11 +76,12 @@ body {
 /* terminal */
 #terminal {
     text-align: left;
-    white-space: pre-line;
+    white-space: pre-wrap;
     font-size: 18px;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
     color: #00ff9c;
     width: 100%;
+    line-height: 1.2; /* Juntamos las líneas */
 }
 
 /* manuscrito */
@@ -207,4 +208,12 @@ button:hover {
 .glitch {
     position: relative;
     color: #ff3366 !important;
+    animation: glitch-anim 0.2s infinite;
+    display: inline; /* Cambiado de inline-block para evitar cortes */
+}
+
+@keyframes glitch-anim {
+    0% { transform: translate(0); text-shadow: -1px 0 rgba(255,0,0,0.5), 1px 0 rgba(0,0,255,0.5); }
+    50% { transform: translate(-0.5px, 0.5px); }
+    100% { transform: translate(0); }
 }
