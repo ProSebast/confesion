@@ -134,7 +134,13 @@ pero para mí tú eres alguien muy especial.`,
 <br>
 pero eso lo hace único y divertido.`,
 
-  `Quiero tener más foto contigo, quiero tener más fotos de ti<br><br>cada momento contigo es especial<br><br>en cada detalle, en cada sonrisa`,
+  `Según este gráfico, cuando estás conmigo el nivel de felicidad alcanza su punto máximo.
+<br><br>
+<div id="heartChartContainer"></div>`,
+
+  `Cada momento contigo es especial
+<br><br>
+en cada detalle, en cada sonrisa`,
 
   `<h2>I love you</h2>
 <h3>Honey</h3>
@@ -212,6 +218,17 @@ function siguiente() {
         if (boton) {
           boton.disabled = false;
         }
+        
+        // Si es la página del gráfico, dibujarlo después de escribir el texto
+        if (paginas[pagina].includes('heartChartContainer')) {
+          setTimeout(() => {
+            const container = document.getElementById('heartChartContainer');
+            if (container) {
+              dibujarGraficoCorazon(container);
+            }
+          }, 500);
+        }
+        
         pagina++;
         if (pagina === paginas.length) {
           const musica = document.getElementById("musica");
@@ -229,4 +246,122 @@ function siguiente() {
       });
     }
   }
+}
+
+// Función para dibujar el gráfico del corazón animado
+function dibujarGraficoCorazon(container) {
+  // Crear SVG
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('width', '100%');
+  svg.setAttribute('height', '320');
+  svg.setAttribute('viewBox', '0 0 400 320');
+  svg.style.maxWidth = '400px';
+  svg.style.margin = '0 auto';
+  svg.style.display = 'block';
+  
+  // Fondo
+  const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+  rect.setAttribute('width', '400');
+  rect.setAttribute('height', '320');
+  rect.setAttribute('fill', '#fffdf5');
+  svg.appendChild(rect);
+  
+  // Ejes del gráfico (más gruesos)
+  const ejeY = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+  ejeY.setAttribute('x1', '50');
+  ejeY.setAttribute('y1', '30');
+  ejeY.setAttribute('x2', '50');
+  ejeY.setAttribute('y2', '280');
+  ejeY.setAttribute('stroke', '#333');
+  ejeY.setAttribute('stroke-width', '3');
+  svg.appendChild(ejeY);
+  
+  const ejeX = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+  ejeX.setAttribute('x1', '50');
+  ejeX.setAttribute('y1', '280');
+  ejeX.setAttribute('x2', '380');
+  ejeX.setAttribute('y2', '280');
+  ejeX.setAttribute('stroke', '#333');
+  ejeX.setAttribute('stroke-width', '3');
+  svg.appendChild(ejeX);
+  
+  // Etiquetas
+  const labelY = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+  labelY.setAttribute('x', '15');
+  labelY.setAttribute('y', '20');
+  labelY.setAttribute('fill', '#333');
+  labelY.setAttribute('font-size', '13');
+  labelY.setAttribute('font-weight', 'bold');
+  labelY.setAttribute('font-family', 'sans-serif');
+  labelY.textContent = 'Felicidad';
+  svg.appendChild(labelY);
+  
+  const labelX = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+  labelX.setAttribute('x', '340');
+  labelX.setAttribute('y', '305');
+  labelX.setAttribute('fill', '#333');
+  labelX.setAttribute('font-size', '13');
+  labelX.setAttribute('font-weight', 'bold');
+  labelX.setAttribute('font-family', 'sans-serif');
+  labelX.textContent = 'Tiempo';
+  svg.appendChild(labelX);
+  
+  // Generar puntos del corazón (MUCHO MÁS GRANDE)
+  const points = [];
+  const centerX = 215;
+  const centerY = 155;
+  const scale = 5.2;
+  
+  // Ecuación paramétrica del corazón (ajustada para gráfico)
+  for (let t = 0; t <= Math.PI * 2; t += 0.02) {
+    const x = scale * 16 * Math.pow(Math.sin(t), 3);
+    const y = -scale * (13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t));
+    points.push({
+      x: centerX + x,
+      y: centerY + y
+    });
+  }
+  
+  // Crear path para la línea del corazón
+  const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  let pathData = `M ${points[0].x} ${points[0].y}`;
+  for (let i = 1; i < points.length; i++) {
+    pathData += ` L ${points[i].x} ${points[i].y}`;
+  }
+  pathData += ' Z';
+  
+  path.setAttribute('d', pathData);
+  path.setAttribute('fill', 'none');
+  path.setAttribute('stroke', '#ff3366');
+  path.setAttribute('stroke-width', '4');
+  path.setAttribute('stroke-linecap', 'round');
+  path.setAttribute('stroke-linejoin', 'round');
+  
+  // Calcular longitud total del path
+  svg.appendChild(path);
+  container.appendChild(svg);
+  
+  const pathLength = path.getTotalLength();
+  path.style.strokeDasharray = pathLength;
+  path.style.strokeDashoffset = pathLength;
+  
+  // Animar el dibujo
+  let start = null;
+  const duration = 3000; // 3 segundos
+  
+  function animate(timestamp) {
+    if (!start) start = timestamp;
+    const progress = (timestamp - start) / duration;
+    
+    if (progress < 1) {
+      path.style.strokeDashoffset = pathLength * (1 - progress);
+      requestAnimationFrame(animate);
+    } else {
+      path.style.strokeDashoffset = 0;
+      // Agregar relleno al terminar
+      path.setAttribute('fill', 'rgba(255, 51, 102, 0.15)');
+    }
+  }
+  
+  requestAnimationFrame(animate);
 }
