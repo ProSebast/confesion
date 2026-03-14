@@ -8,7 +8,24 @@ const lineasTerminal = [
   "> ejecutando programa: confesion.exe"
 ];
 
+// SFX - Usamos audios de Pixabay (libres de derechos)
+const sfxTeclado = new Audio('https://cdn.pixabay.com/download/audio/2022/03/15/audio_7313628795.mp3?filename=typing-6417.mp3');
+const sfxPapel = new Audio('https://cdn.pixabay.com/download/audio/2022/03/10/audio_f55928b122.mp3?filename=paper-rustle-95105.mp3');
+
 let lineaActual = 0;
+let hintTimeout;
+
+function mostrarHint() {
+    const hint = document.getElementById("hint");
+    if (hint) hint.style.display = "block";
+}
+
+function resetHintTimer() {
+    const hint = document.getElementById("hint");
+    if (hint) hint.style.display = "none";
+    clearTimeout(hintTimeout);
+    hintTimeout = setTimeout(mostrarHint, 5000);
+}
 
 function escribirTerminal() {
   if (lineaActual < lineasTerminal.length) {
@@ -19,7 +36,15 @@ function escribirTerminal() {
       if (i < linea.length) {
         const terminal = document.getElementById("terminal");
         if (terminal) {
-          terminal.innerHTML += linea.charAt(i);
+          // Efecto Glitch en la línea de error
+          if (linea.includes("error:")) {
+              terminal.innerHTML += `<span class="glitch">${linea.charAt(i)}</span>`;
+          } else {
+              terminal.innerHTML += linea.charAt(i);
+          }
+          sfxTeclado.currentTime = 0;
+          sfxTeclado.volume = 0.2;
+          sfxTeclado.play().catch(() => {});
         }
         i++;
         setTimeout(escribir, 40);
@@ -38,30 +63,27 @@ function escribirTerminal() {
     const boton = document.getElementById("boton");
     if (boton) {
       boton.style.display = "inline-block";
+      resetHintTimer();
     }
-    // Iniciar música suavemente al terminar la terminal
     const musica = document.getElementById("musica");
     if (musica) {
       musica.volume = 0.1;
-      musica.play().catch(e => console.log("Esperando interacción para audio"));
+      musica.play().catch(() => {});
     }
   }
 }
 
-// Iniciar cuando el DOM esté listo
 document.addEventListener("DOMContentLoaded", () => {
     escribirTerminal();
 });
 
-// Permitir clic en cualquier parte para continuar
 document.addEventListener("click", (e) => {
   const boton = document.getElementById("boton");
   if (boton && boton.style.display !== "none" && !boton.disabled && e.target.tagName !== "BUTTON") {
     siguiente();
+    resetHintTimer();
   }
 });
-
-/* paguinas, Me encanta */
 
 let pagina = 0;
 let volumeInterval;
@@ -115,8 +137,6 @@ pero eso lo hace único y divertido.`,
 <div class="heart">❤️</div>`
 ];
 
-/* MAQUINA DE ESCRIBIR "dios como me gusta" */
-
 function escribirTexto(texto, elemento, callback) {
   let i = 0;
   elemento.innerHTML = "";
@@ -131,8 +151,11 @@ function escribirTexto(texto, elemento, callback) {
         elemento.innerHTML += texto[i];
         i++;
       }
-
-      setTimeout(escribir, 18);
+      // Sonido de escritura (más suave para papel)
+      sfxTeclado.currentTime = 0;
+      sfxTeclado.volume = 0.05;
+      sfxTeclado.play().catch(() => {});
+      setTimeout(escribir, 30);
     } else {
       if (callback) callback();
     }
@@ -141,14 +164,13 @@ function escribirTexto(texto, elemento, callback) {
   escribir();
 }
 
-/* BOTON */
-
 function siguiente() {
   let terminal = document.getElementById("terminal");
   const boton = document.getElementById("boton");
 
   if (terminal && terminal.style.display !== "none") {
     terminal.classList.add("fadeOut");
+    sfxPapel.play().catch(() => {}); // Sonido de papel al aparecer la nota
 
     setTimeout(() => {
       terminal.style.display = "none";
@@ -168,7 +190,6 @@ function siguiente() {
 
     if (contenidoEl) {
       contenidoEl.style.display = "block";
-      // Aumentar volumen gradualmente según avanzan las páginas
       const musica = document.getElementById("musica");
       if (musica) {
         if (musica.paused) musica.play().catch(() => {});

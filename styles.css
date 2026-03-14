@@ -4,6 +4,7 @@ background:#020617;
 color:#00ff9c;
 font-family:monospace;
 text-align:center;
+overflow-x: hidden;
 }
 
 /* estrellas */
@@ -91,8 +92,13 @@ to{transform:translateY(-1000px)}
 
 .container{
 max-width:700px;
-margin:auto;
-padding:40px 20px;
+margin:0 auto;
+padding:40px 10px;
+width: 100%;
+box-sizing: border-box;
+display: flex;
+flex-direction: column;
+align-items: center;
 }
 
 /* terminal */
@@ -103,6 +109,7 @@ white-space:pre-line;
 font-size:18px;
 margin-bottom:40px;
 color:#00ff9c;
+width: 100%;
 }
 
 /* manuscrito */
@@ -139,6 +146,8 @@ background:#38bdf8;
 color:white;
 cursor:pointer;
 transition:.3s;
+display: block;
+margin: 0 auto;
 }
 
 button:hover{
@@ -172,35 +181,37 @@ transition:1s;
 .hoja{
     display:none;
     margin:20px auto;
-    padding:40px 30px;
-    max-width:90%;
-    width: 500px;
+    padding:40px 15px;
+    width: 90%;
+    max-width: 500px;
     background:#fffdf5;
     color:#2b2b2b;
     border-radius:2px;
     box-shadow: 5px 5px 15px rgba(0,0,0,0.3);
     position:relative;
+    box-sizing: border-box;
     /* Efecto de papel roto arriba y abajo */
     clip-path: polygon(
         0% 2%, 5% 0%, 10% 3%, 15% 1%, 20% 4%, 25% 0%, 30% 2%, 35% 5%, 40% 1%, 45% 4%, 50% 0%, 55% 3%, 60% 1%, 65% 5%, 70% 2%, 75% 4%, 80% 0%, 85% 3%, 90% 1%, 95% 4%, 100% 0%,
         100% 100%, 95% 97%, 90% 100%, 85% 98%, 80% 100%, 75% 96%, 70% 99%, 65% 97%, 60% 100%, 55% 98%, 50% 100%, 45% 96%, 40% 99%, 35% 97%, 30% 100%, 25% 98%, 20% 100%, 15% 96%, 10% 99%, 5% 97%, 0% 100%
     );
     background-image: linear-gradient(#ece6d6 1px, transparent 1px);
-    background-size:100% 30px;
+    background-size:100% 32px;
     animation: aparecerNota 1.5s ease-out;
 }
 
 @keyframes aparecerNota {
-    from { opacity: 0; transform: scale(0.9) rotate(-2deg); }
-    to { opacity: 1; transform: scale(1) rotate(0deg); }
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
 }
 
 .hoja #contenido {
     color: #2b2b2b;
     font-family: 'Dancing Script', cursive;
-    font-size: 28px;
-    line-height: 1.4;
+    font-size: 24px;
+    line-height: 1.5;
     display: block !important;
+    text-align: center;
 }
 
 /* Estilo para la lista de cualidades */
@@ -208,22 +219,70 @@ transition:1s;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 15px;
+    gap: 12px;
     margin-top: 20px;
+    width: 100%;
 }
 
 .cualidad-tag {
     background: rgba(56, 189, 248, 0.1);
     border: 1px solid rgba(56, 189, 248, 0.3);
     color: #38bdf8;
-    padding: 8px 20px;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-family: sans-serif;
+    font-size: 1.1rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    width: 90%;
+    max-width: 250px;
+    text-align: center;
+}
+
+/* Efecto Glitch para terminal */
+.glitch {
+    position: relative;
+    color: #ff3366 !important;
+}
+;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    width: 90%;
+    max-width: 250px;
+    text-align: center;
+}
+
+/* Efecto Glitch para terminal */
+.glitch {
+    position: relative;
+    color: #ff3366 !important;
+}
+idad-tag {
+    background: rgba(56, 189, 248, 0.1);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    color: #38bdf8;
+    padding: 6px 15px;
     border-radius: 20px;
     font-family: 'Poppins', sans-serif;
-    font-size: 1.2rem;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    font-size: clamp(0.9rem, 4vw, 1.2rem);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     transition: transform 0.3s;
-    width: 80%;
+    width: 85%;
+    max-width: 300px;
     text-align: center;
+}
+
+/* Efecto Glitch para terminal */
+.glitch {
+    position: relative;
+    color: #ff3366 !important;
+    animation: glitch-anim 0.3s infinite;
+}
+
+@keyframes glitch-anim {
+    0% { transform: translate(0); text-shadow: -2px 0 red, 2px 0 blue; }
+    25% { transform: translate(1px, -1px); text-shadow: 2px 0 red, -2px 0 blue; }
+    50% { transform: translate(-1px, 1px); text-shadow: -2px 0 red, 2px 0 blue; }
+    75% { transform: translate(1px, 1px); text-shadow: 2px 0 red, -2px 0 blue; }
+    100% { transform: translate(0); }
 }
 
 .cualidad-tag:nth-child(even) {

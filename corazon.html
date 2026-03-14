@@ -1,247 +1,72 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="corazon.css">
     <title>Corazón Vibrante</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background: #1a1a2e;
-            overflow: hidden;
-            position: relative;
-        }
-        /* Partículas de corazones flotantes */
-        .floating-heart {
-            position: fixed;
-            color: rgba(242, 0, 68, 0.4);
-            font-size: 1.5rem;
-            pointer-events: none;
-            z-index: 1;
-            animation: float-up linear infinite;
-        }
-        @keyframes float-up {
-            0% {
-                transform: translateY(110vh) rotate(0deg);
-                opacity: 0;
-            }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% {
-                transform: translateY(-10vh) rotate(360deg);
-                opacity: 0;
-            }
-        }
-        #textBackground {
-
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.2);
-            z-index: 1;
-            line-height: 1.8;
-            word-wrap: break-word;
-            overflow: hidden;
-            pointer-events: none;
-            user-select: none;
-        }
-        @media (max-width: 600px) {
-            #textBackground {
-                font-size: 12px;
-                line-height: 1.4;
-                padding: 15px;
-            }
-        }
-        @media (max-width: 400px) {
-            #textBackground {
-                font-size: 10px;
-                line-height: 1.3;
-                padding: 10px;
-            }
-        }
-        .heart {
-            position: relative;
-            z-index: 2;
-        }
-        #choiceContainer {
-            position: fixed;
-            bottom: 50px;
-            left: 0;
-            right: 0;
-            margin: 0 auto;
-            z-index: 2;
-            text-align: center;
-            width: auto;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-        #extraImg {
-            z-index: 2;
-        }
-        .choiceBtn {
-            padding: 10px 30px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        /* Estilo para el rastro del botón No */
-        .no-trail {
-            position: fixed;
-            pointer-events: none;
-            background: rgba(242, 0, 68, 0.3);
-            border-radius: 4px;
-            z-index: 2;
-            animation: trail-fade 0.5s forwards;
-        }
-        @keyframes trail-fade {
-            from { opacity: 0.6; transform: scale(1); }
-            to { opacity: 0; transform: scale(0.8); }
-        }
-    </style>
-
 </head>
 <body>
     <div id="textBackground"></div>
+
     <div class="heart">
         <p>Me gustas… ¿te gustaría intentar algo conmigo?</p>
     </div>
-    <!-- contenedor de botones centrado fijo en la parte inferior, Quizas son demaciadas pero nome importa -->
+
     <div id="choiceContainer">
         <button id="btnYes" class="choiceBtn">Sí</button>
         <button id="btnNo" class="choiceBtn">No</button>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.3.1/dist/confetti.browser.min.js"></script>
 
     <script>
-        const words = [
-            'I\'M YOURS', 'I YEARN FOR YOU', 'LOVE YOU', 'NO OTHER',
-            'I\'M UNDER YOUR SPELL', 'I ADORE YOU', 'WITH ALL MY HEART',
-            'AND SOUL I WILL', 'LOVE YOU UNTIL I DIE', 'AND EVEN AFTER',
-            'I\'LL LOVE YOU', 'FOREVER YOU MAKE MY HEART', 'SO HAPPY',
-            'EVERY DAY WITH YOU I\'M', 'BLESSED TO HAVE YOUR LOVE',
-            'MY HEART CALLS FOR YOU', 'YOU\'VE ENCHANTED ME',
-            'I FEEL LOVE WHEN', 'I LOOK AT YOU', 'YOU\'RE AMAZING',
-            'MY OTHER HALF', 'THERE IS NO OTHER', 'I\'M SMITTEN',
-            'YOU TURN ME INSIDE OUT', 'I NEVER KNEW LOVE LIKE THIS',
-            'YOU MAKE ME SMILE', 'YOU MAKE ME LAUGH', 'YOU MAKE ME FEEL',
-            'ALIVE', 'COMPLETE', 'WHOLE', 'PERFECT', 'BEAUTIFUL'
-        ];
-
-        let backgroundText = '';
-        // generar muchas palabras para abarcar toda la pantalla, por 1 no es sufficiente mierda
-        for (let i = 0; i < 10000; i++) {
-            backgroundText += words[i % words.length] + ' ';
-        }
-
+        const words = ['I\'M YOURS', 'LOVE YOU', 'ADORE YOU', 'FOREVER', 'COMPLETE', 'WHOLE', 'BLESSED', 'AMAZING'];
         const bgDiv = document.getElementById('textBackground');
-        bgDiv.style.whiteSpace = 'normal';
-        bgDiv.style.overflowX = 'hidden';
-        bgDiv.style.padding = '20px';
-        bgDiv.style.textAlign = 'center';
-        bgDiv.style.justifyContent = 'center';
-
-        // Generar partículas de corazones
-        function createParticle() {
-            const heart = document.createElement('div');
-            heart.className = 'floating-heart';
-            heart.innerHTML = '❤️';
-            heart.style.left = Math.random() * 100 + 'vw';
-            const duration = 5 + Math.random() * 5;
-            heart.style.animationDuration = duration + 's';
-            heart.style.opacity = 0.2 + Math.random() * 0.4;
-            document.body.appendChild(heart);
-            setTimeout(() => heart.remove(), duration * 1000);
+        let backgroundText = '';
+        for (let i = 0; i < 2000; i++) {
+            backgroundText += words[Math.floor(Math.random() * words.length)] + ' ';
         }
-        setInterval(createParticle, 300);
+        bgDiv.textContent = backgroundText;
 
-        // animación de máquina de escribir, pero más lenta para que se vea mejor
-
-        let idx = 0;
-        const total = backgroundText.length;
-        const duration = 20000; 
-        const interval = 2; // 
-        const step = Math.ceil(total / (duration / interval));
-        bgDiv.textContent = '';
-        const typer = setInterval(() => {
-            bgDiv.textContent += backgroundText.slice(idx, idx + step);
-            idx += step;
-            if (idx >= total) {
-                clearInterval(typer);
-                bgDiv.textContent = backgroundText; 
-            }
-        }, interval);
-
-
-
-        setInterval(() => {
-            confetti({
-                particleCount: 100,
-                spread: 60,
-                origin: { x: 0.5, y: 0.5 }
-            });
-        }, 2000);
-
-        // comportamiento de botones, Divina esa tipa
         const btnYes = document.getElementById('btnYes');
         const btnNo = document.getElementById('btnNo');
         let yesScale = 1;
 
         function moveButtonRandom() {
-            // Rastro del botón No
-            const rect = btnNo.getBoundingClientRect();
-            const trail = document.createElement('div');
-            trail.className = 'no-trail';
-            trail.style.width = rect.width + 'px';
-            trail.style.height = rect.height + 'px';
-            trail.style.left = rect.left + 'px';
-            trail.style.top = rect.top + 'px';
-            document.body.appendChild(trail);
-            setTimeout(() => trail.remove(), 500);
-
-            // Siempre moverse dentro de la ventana y usar posición fija con z-index altom, quizas es demaciado pero no
-            const maxX = window.innerWidth - btnNo.offsetWidth;
-            const maxY = window.innerHeight - btnNo.offsetHeight;
-            const x = Math.random() * maxX;
-            const y = Math.random() * maxY;
+            const padding = 20;
+            const maxX = window.innerWidth - btnNo.offsetWidth - padding;
+            const maxY = window.innerHeight - btnNo.offsetHeight - padding;
+            const x = Math.max(padding, Math.random() * maxX);
+            const y = Math.max(padding, Math.random() * maxY);
+            
             btnNo.style.position = 'fixed';
-            btnNo.style.zIndex = '3'; // encima de todos los demás elementos
-            btnNo.style.left = Math.max(0, Math.min(maxX, x)) + 'px';
-            btnNo.style.top = Math.max(0, Math.min(maxY, y)) + 'px';
+            btnNo.style.left = x + 'px';
+            btnNo.style.top = y + 'px';
+            btnNo.style.margin = '0';
 
-            // El botón SI crece cada vez que el NO huye
             yesScale += 0.15;
             btnYes.style.transform = `scale(${yesScale})`;
         }
 
-
-        // eventos para escritorio y móvil, Solo existe una opcion jeje
         btnNo.addEventListener('mouseenter', moveButtonRandom);
-        btnNo.addEventListener('click', (e) => { e.preventDefault(); moveButtonRandom(); btnNo.blur(); });
-        btnNo.addEventListener('pointerdown', (e) => e.preventDefault());
-        btnNo.addEventListener('touchstart', (e) => { e.preventDefault(); moveButtonRandom(); btnNo.blur(); });
-
-        // al pulsar si , me muero o no se que pasa pero algo bueno seguro
-        btnYes.addEventListener('click', (e) => {
+        btnNo.addEventListener('touchstart', (e) => {
             e.preventDefault();
-            document.body.innerHTML = `
-                <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;background:#1a1a2e;color:#fff;text-align:center;">
-                    <p style="font-size:1.5rem;padding:20px;">Jeje sabia que dirias que si.</p>
-                    <img src="peach-and-goma-peach.gif" alt="peach" style="max-width:300px;" />
-                </div>
-            `;
+            moveButtonRandom();
         });
 
+        btnYes.addEventListener('click', () => {
+            document.body.innerHTML = `
+                <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100dvh;background:#1a1a2e;color:#fff;text-align:center;font-family:'Poppins', sans-serif;">
+                    <p style="font-size:1.8rem;padding:20px;">Jeje sabía que dirías que sí. ❤️</p>
+                    <img src="peach-and-goma-peach.gif" alt="peach" style="max-width:80vw;width:300px;border-radius:20px;" />
+                </div>
+            `;
+            confetti({ particleCount: 150, spread: 100, origin: { y: 0.6 } });
+        });
     </script>
 </body>
 </html>
