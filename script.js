@@ -17,11 +17,17 @@ function escribirTerminal() {
 
     function escribir() {
       if (i < linea.length) {
-        document.getElementById("terminal").innerHTML += linea.charAt(i);
+        const terminal = document.getElementById("terminal");
+        if (terminal) {
+          terminal.innerHTML += linea.charAt(i);
+        }
         i++;
         setTimeout(escribir, 40);
       } else {
-        document.getElementById("terminal").innerHTML += "\n";
+        const terminal = document.getElementById("terminal");
+        if (terminal) {
+          terminal.innerHTML += "\n";
+        }
         lineaActual++;
         setTimeout(escribirTerminal, 500);
       }
@@ -29,15 +35,33 @@ function escribirTerminal() {
 
     escribir();
   } else {
-    document.getElementById("boton").style.display = "inline-block";
+    const boton = document.getElementById("boton");
+    if (boton) {
+      boton.style.display = "inline-block";
+    }
+    // Iniciar música suavemente al terminar la terminal
+    const musica = document.getElementById("musica");
+    if (musica) {
+      musica.volume = 0.1;
+      musica.play().catch(e => console.log("Esperando interacción para audio"));
+    }
   }
 }
 
 escribirTerminal();
 
+// Permitir clic en cualquier parte para continuar
+document.addEventListener("click", (e) => {
+  const boton = document.getElementById("boton");
+  if (boton && boton.style.display !== "none" && !boton.disabled && e.target.tagName !== "BUTTON") {
+    siguiente();
+  }
+});
+
 /* paguinas, Me encanta */
 
 let pagina = 0;
+let volumeInterval;
 
 const paginas = [
   `Tengo que admitir que quería hacer una nota...
@@ -122,7 +146,7 @@ function siguiente() {
   let terminal = document.getElementById("terminal");
   const boton = document.getElementById("boton");
 
-  if (terminal.style.display !== "none") {
+  if (terminal && terminal.style.display !== "none") {
     terminal.classList.add("fadeOut");
 
     setTimeout(() => {
@@ -130,24 +154,55 @@ function siguiente() {
     }, 1000);
   }
 
-  document.getElementById("contenido").style.display = "block";
+  const contenidoEl = document.getElementById("contenido");
+  if (contenidoEl) {
+    contenidoEl.style.display = "block";
+  }
 
   if (pagina < paginas.length) {
-    boton.disabled = true;
+    if (boton) {
+      boton.disabled = true;
+    }
 
-    const contenidoEl = document.getElementById("contenido");
-    escribirTexto(paginas[pagina], contenidoEl, () => {
-      boton.disabled = false;
-      pagina++;
-      if (pagina === paginas.length) {
-        document.getElementById("musica").play();
-        boton.innerText = "❤️";
-        setTimeout(() => {
-          window.location.href = 'corazon.html';
-        }, 1000);
+    if (contenidoEl) {
+      // Aumentar volumen gradualmente según avanzan las páginas
+      const musica = document.getElementById("musica");
+      if (musica) {
+        if (musica.paused) musica.play().catch(() => {});
+        let targetVolume = Math.min(0.1 + (pagina * 0.1), 0.8);
+        
+        if (volumeInterval) clearInterval(volumeInterval);
+        volumeInterval = setInterval(() => {
+          if (musica.volume < targetVolume) {
+            musica.volume = Math.min(musica.volume + 0.05, targetVolume);
+          } else {
+            clearInterval(volumeInterval);
+          }
+        }, 100);
       }
-    });
+
+      escribirTexto(paginas[pagina], contenidoEl, () => {
+        if (boton) {
+          boton.disabled = false;
+        }
+        pagina++;
+        if (pagina === paginas.length) {
+          const musica = document.getElementById("musica");
+          if (musica) {
+            musica.volume = 1.0;
+          }
+          if (boton) {
+            boton.innerText = "❤️";
+          }
+          setTimeout(() => {
+            window.location.href = 'corazon.html';
+          }, 1000);
+        }
+      });
+    }
   } else {
-    boton.style.display = "none";
+    if (boton) {
+      boton.style.display = "none";
+    }
   }
 }
