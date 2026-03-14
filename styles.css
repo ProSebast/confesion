@@ -81,7 +81,7 @@ body {
     margin-bottom: 20px;
     color: #00ff9c;
     width: 100%;
-    line-height: 1.2; /* Juntamos las líneas */
+    line-height: 1.2;
 }
 
 /* manuscrito */
@@ -158,12 +158,22 @@ button:hover {
     );
     background-image: linear-gradient(#ece6d6 1px, transparent 1px);
     background-size: 100% 32px;
-    animation: aparecerNota 1.5s ease-out;
+    animation: aparecerNota 1.2s cubic-bezier(0.23, 1, 0.32, 1) forwards;
 }
 
 @keyframes aparecerNota {
-    from { opacity: 0; transform: scale(0.9); }
-    to { opacity: 1; transform: scale(1); }
+    0% { 
+        opacity: 0; 
+        transform: translateY(-100vh) rotate(-15deg); 
+    }
+    60% {
+        opacity: 1;
+        transform: translateY(20px) rotate(5deg);
+    }
+    100% { 
+        opacity: 1; 
+        transform: translateY(0) rotate(0deg); 
+    }
 }
 
 .hoja #contenido {
@@ -204,16 +214,8 @@ button:hover {
 .cualidad-tag:nth-child(odd) { transform: rotate(-1deg); }
 .cualidad-tag:hover { transform: scale(1.1) rotate(0deg); background: rgba(56, 189, 248, 0.2); }
 
-/* Efecto Glitch para terminal */
-.glitch {
-    position: relative;
+/* Error en rojo para terminal */
+.error-rojo {
     color: #ff3366 !important;
-    animation: glitch-anim 0.2s infinite;
-    display: inline; /* Cambiado de inline-block para evitar cortes */
-}
-
-@keyframes glitch-anim {
-    0% { transform: translate(0); text-shadow: -1px 0 rgba(255,0,0,0.5), 1px 0 rgba(0,0,255,0.5); }
-    50% { transform: translate(-0.5px, 0.5px); }
-    100% { transform: translate(0); }
+    font-weight: bold;
 }

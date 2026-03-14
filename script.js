@@ -8,7 +8,6 @@ const lineasTerminal = [
   "> ejecutando programa: confesion.exe"
 ];
 
-// SFX - Usamos audios de Pixabay (libres de derechos)
 const sfxTeclado = new Audio('https://cdn.pixabay.com/download/audio/2022/03/15/audio_7313628795.mp3?filename=typing-6417.mp3');
 const sfxPapel = new Audio('https://cdn.pixabay.com/download/audio/2022/03/10/audio_f55928b122.mp3?filename=paper-rustle-95105.mp3');
 
@@ -31,17 +30,19 @@ function escribirTerminal() {
   if (lineaActual < lineasTerminal.length) {
     let linea = lineasTerminal[lineaActual];
     let i = 0;
+    const esLineaError = linea.includes("error:");
 
     function escribir() {
       if (i < linea.length) {
         const terminal = document.getElementById("terminal");
         if (terminal) {
-          // Efecto Glitch en la línea de error
-          if (linea.includes("error:")) {
-              terminal.innerHTML += `<span class="glitch">${linea.charAt(i)}</span>`;
-          } else {
-              terminal.innerHTML += linea.charAt(i);
+          if (esLineaError && i === 0) {
+            terminal.innerHTML += '<span class="error-rojo">';
+            console.log("Aplicando clase error-rojo");
           }
+          
+          terminal.innerHTML += linea.charAt(i);
+          
           sfxTeclado.currentTime = 0;
           sfxTeclado.volume = 0.2;
           sfxTeclado.play().catch(() => {});
@@ -51,6 +52,9 @@ function escribirTerminal() {
       } else {
         const terminal = document.getElementById("terminal");
         if (terminal) {
+          if (esLineaError) {
+            terminal.innerHTML += '</span>';
+          }
           terminal.innerHTML += "\n";
         }
         lineaActual++;
@@ -151,7 +155,6 @@ function escribirTexto(texto, elemento, callback) {
         elemento.innerHTML += texto[i];
         i++;
       }
-      // Sonido de escritura (más suave para papel)
       sfxTeclado.currentTime = 0;
       sfxTeclado.volume = 0.05;
       sfxTeclado.play().catch(() => {});
@@ -170,7 +173,7 @@ function siguiente() {
 
   if (terminal && terminal.style.display !== "none") {
     terminal.classList.add("fadeOut");
-    sfxPapel.play().catch(() => {}); // Sonido de papel al aparecer la nota
+    sfxPapel.play().catch(() => {});
 
     setTimeout(() => {
       terminal.style.display = "none";
