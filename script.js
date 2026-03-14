@@ -48,7 +48,10 @@ function escribirTerminal() {
   }
 }
 
-escribirTerminal();
+// Iniciar cuando el DOM esté listo
+document.addEventListener("DOMContentLoaded", () => {
+    escribirTerminal();
+});
 
 // Permitir clic en cualquier parte para continuar
 document.addEventListener("click", (e) => {
@@ -76,15 +79,13 @@ con mi estilo,
 con mi toque personal.`,
 
   `Porque eres:<br>
-<div class="d-flex flex-column align-items-center">
-  <ul class="list-group w-75">
-    <li class="list-group-item bg-transparent border-0 text-white">Asombrosa</li>
-    <li class="list-group-item bg-transparent border-0 text-white">Inteligente</li>
-    <li class="list-group-item bg-transparent border-0 text-white">Apasionada</li>
-    <li class="list-group-item bg-transparent border-0 text-white">Orgullosa</li>
-    <li class="list-group-item bg-transparent border-0 text-white">Tímida</li>
-    <li class="list-group-item bg-transparent border-0 text-white">Valiente</li>
-  </ul>
+<div class="cualidades-container">
+    <div class="cualidad-tag">Asombrosa</div>
+    <div class="cualidad-tag">Inteligente</div>
+    <div class="cualidad-tag">Apasionada</div>
+    <div class="cualidad-tag">Orgullosa</div>
+    <div class="cualidad-tag">Tímida</div>
+    <div class="cualidad-tag">Valiente</div>
 </div>`,
 
   `Esos ojos que deslumbran,
@@ -151,13 +152,14 @@ function siguiente() {
 
     setTimeout(() => {
       terminal.style.display = "none";
+      const hoja = document.getElementById("hojaNota");
+      if (hoja) {
+          hoja.style.display = "block";
+      }
     }, 1000);
   }
 
   const contenidoEl = document.getElementById("contenido");
-  if (contenidoEl) {
-    contenidoEl.style.display = "block";
-  }
 
   if (pagina < paginas.length) {
     if (boton) {
@@ -165,6 +167,7 @@ function siguiente() {
     }
 
     if (contenidoEl) {
+      contenidoEl.style.display = "block";
       // Aumentar volumen gradualmente según avanzan las páginas
       const musica = document.getElementById("musica");
       if (musica) {
@@ -192,17 +195,14 @@ function siguiente() {
             musica.volume = 1.0;
           }
           if (boton) {
-            boton.innerText = "❤️";
+            boton.innerText = "Ver sorpresa ❤️";
+            boton.onclick = (e) => {
+              e.stopPropagation();
+              window.location.href = 'corazon.html';
+            };
           }
-          setTimeout(() => {
-            window.location.href = 'corazon.html';
-          }, 1000);
         }
       });
-    }
-  } else {
-    if (boton) {
-      boton.style.display = "none";
     }
   }
 }
